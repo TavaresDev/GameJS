@@ -3,6 +3,7 @@
 <head>
 	<meta charset="utf-8" />
 	<title>My engine</title>
+	<script src = "sprite.js"></script>
 	<style>
 		canvas {
 			position: absolute;
@@ -18,7 +19,7 @@
 <body>
 	<script>
 		//Game variable6
-		var canvas, ctx, ALTURA, LARGURA, frames = 0, maxPulos=3, velocidade = 6, estadoAtual, record, test,
+		var canvas, ctx, ALTURA, LARGURA, frames = 0, maxPulos=3, velocidade = 6, estadoAtual, record, img,
 
 		estados = {
 			jogar:0,
@@ -40,8 +41,8 @@
 		bloco = {
 			x:100,
 			y:0,
-			altura:50,
-			largura:50,
+			altura: spriteBoneco.altura,
+			largura: spriteBoneco.largura,
 			cor: "#ff4e4e",
 			gravidade:1.6,
 			velocidade:0,
@@ -79,8 +80,9 @@
 			},
 
 			desenha: function(){
-				ctx.fillStyle = this.cor;
-				ctx.fillRect(this.x, this.y, this.largura, this.altura);
+				spriteBoneco.desenha(this.x, this.y);
+				//ctx.fillStyle = this.cor;
+				//ctx.fillRect(this.x, this.y, this.largura, this.altura);
 			}
 		},
 
@@ -184,6 +186,9 @@
 			if (record == null)
 				record = 0;
 
+			img = new Image();
+			img.src = "img/sheet.png"
+
 			roda();
 
 		}
@@ -204,8 +209,9 @@
 			
 		}
 		function desenha() {
-			ctx.fillStyle = "#50beff";
-			ctx.fillRect(0, 0, LARGURA, ALTURA);
+			//ctx.fillStyle = "#50beff";
+			//ctx.fillRect(0, 0, LARGURA, ALTURA);
+			bg.desenha(0, 0);
 
 			ctx.fillStyle = "#fff";
 			ctx.font = "50px Arial";
