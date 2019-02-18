@@ -19,7 +19,7 @@
 <body>
 	<script>
 		//Game variable6
-		var canvas, ctx, ALTURA, LARGURA, maxPulos=3, velocidade = 6, estadoAtual, record, img,
+		var canvas, ctx, ALTURA, LARGURA, frames = 0, maxPulos=3, velocidade = 6, estadoAtual, record, img,
 
 		estados = {
 			jogar:0,
@@ -215,7 +215,7 @@
 		}
 		function atualiza() {
 
-			bloco.atualiza();
+			
 			bloco.atualiza();
 
 			if(estadoAtual == estados.jogando){
