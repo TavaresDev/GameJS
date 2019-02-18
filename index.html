@@ -19,7 +19,7 @@
 <body>
 	<script>
 		//Game variable6
-		var canvas, ctx, ALTURA, LARGURA, frames = 0, maxPulos=3, velocidade = 6, estadoAtual, record, img,
+		var canvas, ctx, ALTURA, LARGURA, maxPulos=3, velocidade = 6, estadoAtual, record, img,
 
 		estados = {
 			jogar:0,
@@ -29,12 +29,18 @@
 
 		chao = {
 			y: 550,
+			x: 0,
 			altura: 50,
-			cor: "#ffdf70",
+
+			atualiza: function(){
+				this.x -= velocidade;
+				if (this.x <= -30)
+					this.x = 0;
+			},
 
 			desenha: function() {
-				ctx.fillStyle = this.cor;
-				ctx.fillRect(0, this.y, LARGURA, this.altura);
+				spriteChao.desenha(this.x, this.y);
+				spriteChao.desenha(this.x + spriteChao.LARGURA, this.y);
 			}
 		},
 
@@ -43,7 +49,7 @@
 			y:0,
 			altura: spriteBoneco.altura,
 			largura: spriteBoneco.largura,
-			cor: "#ff4e4e",
+		
 			gravidade:1.6,
 			velocidade:0,
 			forcaDoPulo: 30,
@@ -53,6 +59,7 @@
 			atualiza: function() {
 				this.velocidade += this.gravidade;
 				this.y += this.velocidade;
+				this.rotacao += Math.PI / 180 * velocidade;
 
 				if (this.y > chao.y - this.altura && estadoAtual != estados.perdeu) {
 					this.y = chao.y - this.altura;
@@ -81,6 +88,13 @@
 
 			desenha: function(){
 				spriteBoneco.desenha(this.x, this.y);
+				ctx.save();
+				//operacoes para rotacionar
+				ctx.translate(this.x + this.largura /2, this.y +this.altura/2);
+				ctx.rotate(this.rotacao);
+				spriteBoneco.desenha(-this.largura /2, -this.altura  /2);
+
+				ctx.restore();
 				//ctx.fillStyle = this.cor;
 				//ctx.fillRect(this.x, this.y, this.largura, this.altura);
 			}
@@ -200,7 +214,8 @@
 
 		}
 		function atualiza() {
-			frames++;
+
+			bloco.atualiza();
 			bloco.atualiza();
 
 			if(estadoAtual == estados.jogando){
