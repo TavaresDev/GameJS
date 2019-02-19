@@ -40,21 +40,22 @@
 
 			desenha: function() {
 				spriteChao.desenha(this.x, this.y);
-				spriteChao.desenha(this.x + spriteChao.LARGURA, this.y);
+				spriteChao.desenha(this.x + spriteChao.largura, this.y);
 			}
 		},
 
 		bloco = {
 			x:100,
 			y:0,
-			altura: spriteBoneco.altura,
-			largura: spriteBoneco.largura,
+			altura: spriteBoneco2.altura,
+			largura: spriteBoneco2.largura,
 		
 			gravidade:1.6,
 			velocidade:0,
 			forcaDoPulo: 30,
 			qntPulos: 0,
 			score: 0,
+			rotacao:0,
 
 			atualiza: function() {
 				this.velocidade += this.gravidade;
@@ -86,13 +87,12 @@
 				this.score = 0;
 			},
 
-			desenha: function(){
-				spriteBoneco.desenha(this.x, this.y);
+			desenha: function() {
 				ctx.save();
 				//operacoes para rotacionar
-				ctx.translate(this.x + this.largura /2, this.y +this.altura/2);
+				ctx.translate(this.x + this.largura / 2, this.y + this.altura / 2);
 				ctx.rotate(this.rotacao);
-				spriteBoneco.desenha(-this.largura /2, -this.altura  /2);
+				spriteBoneco2.desenha(-this.largura / 2, -this.altura  / 2);
 
 				ctx.restore();
 				//ctx.fillStyle = this.cor;
@@ -201,7 +201,7 @@
 				record = 0;
 
 			img = new Image();
-			img.src = "img/sheet.png"
+			img.src = "img/sheetn1.png"
 
 			roda();
 
@@ -215,48 +215,47 @@
 		}
 		function atualiza() {
 
-			
-			bloco.atualiza();
-
 			if(estadoAtual == estados.jogando){
 				obstaculos.atualiza();
 			}
-			
+
+			chao.atualiza();
+			bloco.atualiza();
 		}
 		function desenha() {
-			//ctx.fillStyle = "#50beff";
-			//ctx.fillRect(0, 0, LARGURA, ALTURA);
 			bg.desenha(0, 0);
 
 			ctx.fillStyle = "#fff";
 			ctx.font = "50px Arial";
 			ctx.fillText(bloco.score, 30, 68);
 
-			if (estadoAtual == estados.jogar){
-				ctx.fillStyle = "green";
-				ctx.fillRect (LARGURA/2 - 50, ALTURA/2 - 50, 100, 100);
-			}
-			else if (estadoAtual == estados.perdeu){
-				ctx.fillStyle = "red";
-				ctx.fillRect (LARGURA/2 - 50, ALTURA/2 - 50, 100, 100);
-				ctx.save();
-				ctx.translate(LARGURA/2, ALTURA/2);
-				ctx.fillStyle = "#fff";
-
-				if (bloco.score > record)
-					ctx.fillText("Novo Record!",-150, -65);
-				else 
-					ctx.fillText("Record " + record, -100, -65);
-
-				ctx.fillText(bloco.score, -ctx.measureText(bloco.score).width/2, 19);
-				ctx.restore();
-			}
-			else if (estadoAtual == estados.jogando){
+			if (estadoAtual == estados.jogando)
 				obstaculos.desenha();
-			}
-
+			
 			chao.desenha();
 			bloco.desenha();
+
+			if (estadoAtual == estados.jogar)
+				jogar.desenha(LARGURA/2 - jogar.largura /2, ALTURA / 2 - jogar.altura/2);
+
+			if (estadoAtual == estados.perdeu) {
+				perdeu.desenha(LARGURA / 2 - perdeu.largura /2, ALTURA/2 - perdeu.altura/2 - spriteRecord.altura/2);
+				spriteRecord.desenha(LARGURA/2 - spriteRecord.largura/2, ALTURA /2 + perdeu.altura /2- spriteRecord.altura/2 -25);
+
+				ctx.fillStyle = "#fff";
+				ctx.fillText(bloco.score, 375, 390);
+
+				if (bloco.score > record) {
+					novo.desenha(LARGURA/2 -180, ALTURA /2 +30);
+					ctx.fillText(bloco.score, 420, 470);
+				}	
+				else
+					ctx.fillText(record, 420, 470);
+				
+
+			}
+
+			
 
 		}
 
